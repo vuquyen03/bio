@@ -25,7 +25,7 @@ def access_camera(camera_number):
 # number_images = 70
 
 def capture_face(camera_number, number_images, path):
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(camera_number)
     for imgnum in range(number_images):
         print("Collecting image {}".format(imgnum))
         ret, frame = cap.read()
@@ -59,7 +59,7 @@ def detectfaceMTCNN(input, output, newHeight, newWidth):
 
             # Cắt phần mặt từ ảnh gốc
             face_image = image[y:y+height, x:x+width]
-            resized_face = cv2.resize(face_image, (new_width, new_height))
+            resized_face = cv2.resize(face_image, (newWidth, newHeight))
 
             # Tạo đường dẫn đến thư mục đích và tên tập tin
             output_filename = f'{filename.split(".")[0]}_face{i}.jpg'
