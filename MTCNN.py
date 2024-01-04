@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import detect_face
+import uuid
 import time
 import os
 
@@ -46,7 +47,8 @@ def camera_detect():
                           (0,255,0), 2)
 
         cv2.imshow('MTCNN Demo', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        key = cv2.waitKey(1)
+        if key == ord('q') or key == 27:  # 27 là mã ASCII cho phím Esc
             break
 
     video_capture.release()
@@ -76,8 +78,26 @@ def detectFace(input, output, newSize):
             # chỉ lấy 1 mặt ở trung tâm bức ảnh
             break
 
-input = 'hieu/'
-output = 'test/'
-# detectFace(input, output, 100)
-camera_detect()
+def capture_face(number_images, path):
+    os.makedirs(path, exist_ok = True)
+    cap = cv2.VideoCapture(0)
+    for imgnum in range(number_images):
+        ret, frame = cap.read()
+        imgname = os.path.join(path, f'{str(uuid.uuid1())}.jpg')
+        cv2.imwrite(imgname, frame)
+        cv2.imshow('frame', frame)
+        time.sleep(0.5)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        
+    cap.release()
+    cv2.destroyAllWindows()
+        
 
+# input = 'long/'
+# output = 'test/long/'
+# # detectFace(input, output, 100)
+# detectFace(input, output, 256)
+
+
+  
